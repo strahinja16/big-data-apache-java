@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+    submit:
+        build: ./submit
+        image: big-data_submit:latest
+        container_name: submit
+        environment:
+          HDFS_URL: hdfs://namenode:9000
+          APP_ARGS_CSV_FILE_PATH: /big-data-weather/weather.csv /big-data/data.csv
+          SPARK_MASTER_NAME: spark-master
+          SPARK_MASTER_PORT: 7077
+          SPARK_APPLICATION_ARGS: ""
+          ENABLE_INIT_DAEMON: "false"
