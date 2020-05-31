@@ -1,6 +1,9 @@
 # BigData course projects
 Project 1: Spark SQL queries (with UDF)
 
+Project 2: Spark streaming + Kafka
+
+
 HDFS - One namenode and one datanode.
 
 Spark - Master node and two workers.
@@ -35,20 +38,53 @@ big-data/
     weather-data.csv
 ```
 
-## Running the Project 1
-
+## Before running any project
 ```
-docker-compose -f docker-compose-1.yaml up
+docker-compose up
 ```
-
 - Wait for all containers to start then run the next command to place datasets on hdfs
 
 ```
 ./place-datasets-to-hdfs.sh
 ```
 
-- Run Spark submit application
+### Setup Mongo
+
+Grant user access to the Weather db used by streaming consumer.
+
+```
+docker exec -it mongo mongo -u "root" -p "root1234"
+```
+```
+use admin
+```
+```
+db.updateUser( "root", { roles : [{ role : "root", db : "admin"  },{ role : "readWrite", db: "weather"  }]})
+```
+```
+exit
+```
+
+## Running the Project 1
+Spark SQL application.
+Queries:
+- GetCountriesSortedByMostSevereWinter - [Weather dataset] Reads the winter reports for given year and returns a sorted list of countries by descending count of severe reports.
+- GetSeverityStatisticsPerEventTypeForCityInLastTenYears - [Weather dataset] Gets the min, max, avg, and stddev values for each event type in given city for the last ten years.
+- GetCityWithMinAndMaxBrokenVehiclesInFiveYears - [Traffic dataset] Returns the two cities with the most and the least broken vehicles in last five years.
+
+
+Run Spark submit application
 
 ```
 docker-compose -f docker-compose-submit.yaml up --build
+```
+
+## Running the Project 2
+Spark Streaming application.
+
+
+Run Spark producer and consumer applications
+
+```
+docker-compose -f docker-compose-streaming.yaml up --build
 ```
