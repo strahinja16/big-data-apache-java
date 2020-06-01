@@ -1,25 +1,26 @@
 version: "3"
 
 services:
-  # BigData2 - Java spark streaming
+  # SPARK
   streaming-consumer:
     build: ./streaming-consumer
     image: big-data_streaming-consumer:latest
     container_name: streaming-consumer
     environment:
-      INITIAL_SLEEP_TIME_IN_SECONDS: 5
+      INITIAL_SLEEP_TIME_IN_SECONDS: 0
       SPARK_MASTER_NAME: spark-master
       SPARK_MASTER_PORT: 7077
       SPARK_APPLICATION_ARGS: ''
       MONGO_URL: mongodb://root:root1234@mongo:27017/admin
       KAFKA_URL: kafka:9092
       ENABLE_INIT_DAEMON: 'false'
-      DATA_RECEIVING_TIME_IN_SECONDS: 10
+      DATA_RECEIVING_TIME_IN_SECONDS: 30
   streaming-producer:
     build: ./streaming-producer
     image: big-data_streaming-producer:latest
     container_name: streaming-producer
     environment:
+      INITIAL_SLEEP_TIME_IN_SECONDS: 0
       HDFS_URL: hdfs://namenode:9000
       CSV_FILE_PATH: /big-data-weather/weather.csv
       KAFKA_URL: kafka:9092

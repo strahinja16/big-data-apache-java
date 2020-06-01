@@ -42,8 +42,8 @@ public class EventData {
     @Override
     public String toString() {
         return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s", eventId,
-                type, severity, startTime, endTime, timeZone, locationLat, locationLng,
-                airportCode, city, country, state, zipCode
+            type, severity, startTime, endTime, timeZone, locationLat, locationLng,
+            airportCode, city, country, state, zipCode
         );
     }
 

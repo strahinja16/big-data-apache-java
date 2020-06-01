@@ -66,7 +66,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>
-                                Main
+                                Main2
                             </mainClass>
                         </manifest>
                     </archive>

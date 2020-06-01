@@ -139,5 +139,6 @@
     <orderEntry type="library" name="Maven: org.apache.spark:spark-streaming-kafka-0-10_2.11:2.4.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.kafka:kafka-clients:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:3.12.2" level="project" />
+    <orderEntry type="library" name="Maven: joda-time:joda-time:2.9.9" level="project" />
   </component>
 </module>

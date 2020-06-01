@@ -3,7 +3,6 @@ Project 1: Spark SQL queries (with UDF)
 
 Project 2: Spark streaming + Kafka
 
-
 HDFS - One namenode and one datanode.
 
 Spark - Master node and two workers.
@@ -59,7 +58,7 @@ docker exec -it mongo mongo -u "root" -p "root1234"
 use admin
 ```
 ```
-db.updateUser( "root", { roles : [{ role : "root", db : "admin"  },{ role : "readWrite", db: "weather"  }]})
+db.updateUser("root", { roles : [{ role : "root", db : "admin" },{ role : "readWrite", db: "weather" }]})
 ```
 ```
 exit
@@ -67,11 +66,11 @@ exit
 
 ## Running the Project 1
 Spark SQL application.
+
 Queries:
 - GetCountriesSortedByMostSevereWinter - [Weather dataset] Reads the winter reports for given year and returns a sorted list of countries by descending count of severe reports.
 - GetSeverityStatisticsPerEventTypeForCityInLastTenYears - [Weather dataset] Gets the min, max, avg, and stddev values for each event type in given city for the last ten years.
 - GetCityWithMinAndMaxBrokenVehiclesInFiveYears - [Traffic dataset] Returns the two cities with the most and the least broken vehicles in last five years.
-
 
 Run Spark submit application
 
@@ -82,6 +81,9 @@ docker-compose -f docker-compose-submit.yaml up --build
 ## Running the Project 2
 Spark Streaming application.
 
+Producer reads the weather dataset and sends the data via Kafka topic, one row per second. 
+
+Consumer reads the data and filters rain events for city Saguache that are stored to Mongo db. Consumer also uses Spark workers to calculate, after each batch, min, max and avg minutes of Saguache's raining events duration. 
 
 Run Spark producer and consumer applications
 
