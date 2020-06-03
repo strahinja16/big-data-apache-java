@@ -3,6 +3,8 @@ Project 1: Spark SQL queries (with UDF)
 
 Project 2: Spark streaming + Kafka
 
+Project 3: Spark ML
+
 HDFS - One namenode and one datanode.
 
 Spark - Master node and two workers.
@@ -39,7 +41,7 @@ big-data/
 
 ## Before running any project
 ```
-docker-compose up
+./run-services.sh
 ```
 - Wait for all containers to start then run the next command to place datasets on hdfs
 
@@ -90,3 +92,21 @@ Run Spark producer and consumer applications
 ```
 docker-compose -f docker-compose-streaming.yaml up --build
 ```
+
+## Running the Project 3
+Spark ML application.
+
+Application first filters the weather dataset, removes correlated attributes and transforms the data to discrete numerical values.Then the model is trained in order to predict the severity of weather event based on event type, season of year and geographical latitude and longitude.
+
+```
+./run-ml.sh
+```
+
+Application will train the model using `weather-ml.csv` in HDFS which has 100.000 records. 
+
+In order for it to use the whole weather dataset:
+      
+Change `APP_ARGS_CSV_FILE_PATH: /big-data-weather/weather-ml.csv` to `APP_ARGS_CSV_FILE_PATH: /big-data-weather/weather.csv`
+ in the `docker-compose-ml-batch.yaml`.
+ 
+ Model's accuracy  is `79%`.       

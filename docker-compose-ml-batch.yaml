@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  # BigData3 - Java spark ML
+  ml-batch:
+    build: ./ml-batch
+    image: big-data_ml-batch:latest
+    container_name: ml-batch
+    environment:
+      HDFS_URL: hdfs://namenode:9000
+      APP_ARGS_CSV_FILE_PATH: /big-data-weather/weather-ml.csv
+      SPARK_MASTER_NAME: spark-master
+      SPARK_MASTER_PORT: 7077
+      SPARK_APPLICATION_ARGS: ""
+      ENABLE_INIT_DAEMON: "false"

@@ -27,3 +27,10 @@ then
   echo "[INFO]: Adding weather.csv in the /big-data-weather folder on the HDFS"
   docker exec -it namenode hdfs dfs -put /big-data-weather/weather.csv /big-data-weather/weather.csv
 fi
+
+docker exec -it namenode hdfs dfs -test -e /big-data-weather/weather-ml.csv
+if [ $? -eq 1 ]
+then
+  echo "[INFO]: Adding weather-ml-data.csv  in the /big-data-weather folder on the HDFS"
+  docker exec -it namenode hdfs dfs -put /big-data-weather/weather-ml.csv  /big-data-weather/weather-ml.csv
+fi

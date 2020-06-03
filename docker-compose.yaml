@@ -68,6 +68,7 @@ services:
       - hadoop_namenode:/hadoop/dfs/name
       - ./big-data/traffic-data.csv:/big-data/data.csv
       - ./big-data/weather-data.csv:/big-data-weather/weather.csv
+      - ./big-data/weather-ml-data.csv:/big-data-weather/weather-ml.csv
     environment:
       - CLUSTER_NAME=test
     env_file:
