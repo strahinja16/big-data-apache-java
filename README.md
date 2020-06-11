@@ -94,7 +94,7 @@ docker-compose -f docker-compose-streaming.yaml up --build
 ```
 
 ## Running the Project 3
-Spark ML traning application.
+Spark ML training application.
 
 Application first filters the weather dataset, removes correlated attributes and transforms the data to discrete numerical values.Then the model is trained in order to predict the severity of weather event based on event type, season of year and geographical latitude and longitude.
 
@@ -117,4 +117,4 @@ Spark ML streaming application.
 ./run-ml-streaming.sh
 ```
 Running this script will start the producer application which will send the weather data via Kafka topic, row by row. 
-Ml Streaming Consumer application reads the data and tries to predict the severity of weather event using loaded ml model previously saved by the Spark ML training application.
+ML Streaming Consumer application reads the data and tries to predict the severity of weather event using loaded ml model previously saved by the Spark ML training application.
