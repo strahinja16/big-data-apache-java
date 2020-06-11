@@ -2,8 +2,8 @@
 
 cd ./big-data
 
-head -n 100000 weather-data.csv > weather-ml-data.csv
+head -n 10000 weather-data.csv > weather-ml-data.csv
 
 cd ..
 
-docker-compose up
+docker-compose up --build --force-recreate

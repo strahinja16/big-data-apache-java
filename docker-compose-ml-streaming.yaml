@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  # BigData3 - Java spark ML
+  ml-streaming:
+    build: ./ml-streaming
+    image: big-data_ml-streaming:latest
+    container_name: ml-streaming
+    environment:
+      INITIAL_SLEEP_TIME_IN_SECONDS: 30
+      SPARK_MASTER_NAME: spark-master
+      SPARK_MASTER_PORT: 7077
+      SPARK_APPLICATION_ARGS: ""
+      KAFKA_URL: kafka:9092
+      HDFS_URL: hdfs://namenode:9000
+      ENABLE_INIT_DAEMON: "false"
+      DATA_RECEIVING_TIME_IN_SECONDS: 30
+  ml-streaming-producer:
+      build: ./streaming-producer
+      image: big-data_ml-streaming-producer:latest
+      container_name: ml-streaming-producer
+      environment:
+        INITIAL_SLEEP_TIME_IN_SECONDS: 30
+        HDFS_URL: hdfs://namenode:9000
+        CSV_FILE_PATH: /big-data-weather/weather.csv
+        KAFKA_URL: kafka:9092
+        DATA_SENDING_TIME_IN_SECONDS: 10

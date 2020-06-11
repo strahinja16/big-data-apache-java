@@ -12,6 +12,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import javax.sound.midi.SysexMessage;
 import java.io.IOException;
 
 import static org.apache.spark.sql.types.DataTypes.*;
@@ -41,8 +42,11 @@ public class Main {
         String hdfsPath = args[0];
         String csvFile = hdfsUrl + hdfsPath;
 
-        SparkSession spark = SparkSession.builder().appName("BigData-3").master(sparkMasterUrl).getOrCreate();
+        SparkSession spark = SparkSession.builder().appName("BigData-3-ML").master(sparkMasterUrl).getOrCreate();
         Dataset<Row> dataSet = spark.read().option("header", "true").csv(csvFile);
+
+        System.out.println("Dataset loaded");
+        System.out.println(dataSet != null);
 
         Dataset<Row> weather = dataSet
             .filter(
@@ -70,11 +74,11 @@ public class Main {
         UserDefinedFunction getSeverity = functions.udf(udfConvertSeverity, DataTypes.IntegerType);
 
         Dataset<Row> preparedData = weather.select(
-            getSeverity.apply(weather.col("Severity")).as("WeatherSeverity"),
-            getSeason.apply(weather.col("StartTime(UTC)")).as("Season"),
-            getWeatherType.apply(weather.col("Type")).as("WeatherType"),
-            weather.col("LocationLat").cast(DoubleType).as("Lat"),
-            weather.col("LocationLng").cast(DoubleType).as("Lng")
+                getSeverity.apply(weather.col("Severity")).as("WeatherSeverity"),
+                getSeason.apply(weather.col("StartTime(UTC)")).as("Season"),
+                getWeatherType.apply(weather.col("Type")).as("WeatherType"),
+                weather.col("LocationLat").cast(DoubleType).as("Lat"),
+                weather.col("LocationLng").cast(DoubleType).as("Lng")
         );
 
         VectorAssembler vectorAssembler = new VectorAssembler()
@@ -87,14 +91,17 @@ public class Main {
         Dataset<Row> trainingData = splits[0];
         Dataset<Row> testData = splits[1];
 
+        trainingData.show(50);
         RandomForestClassifier rf = new RandomForestClassifier()
                 .setLabelCol("WeatherSeverity")
                 .setFeaturesCol("Features");
 
-        RandomForestClassificationModel model = rf.fit((trainingData));
+        RandomForestClassificationModel model = rf.fit(trainingData);
 
         Dataset<Row> predictions = model.transform(testData);
         predictions.show(100);
+
+        model.save(hdfsUrl + "/big-data-weather/ml-model");
 
         MulticlassClassificationEvaluator evaluator = new MulticlassClassificationEvaluator()
                 .setLabelCol("WeatherSeverity")
@@ -104,8 +111,6 @@ public class Main {
         double accuracy = evaluator.evaluate(predictions);
         System.out.println("Accuracy = " + accuracy);
         System.out.println("Test Error = " + (1.0 - accuracy));
-
-//        model.save(hdfsUrl + "/ml-model");
 
         spark.stop();
         spark.close();
